@@ -1,0 +1,57 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "pengguna",
+        "schemaName": "public",
+        "x": 44.928812801162124,
+        "y": -276.1271120101686
+      },
+      {
+        "name": "mahasiswa",
+        "schemaName": "public",
+        "x": 537.8906198330027,
+        "y": -244.96497097870545
+      },
+      {
+        "name": "dosen",
+        "schemaName": "public",
+        "x": 64.76395827428203,
+        "y": 101.82034239477048
+      },
+      {
+        "name": "jadwal_konsul",
+        "schemaName": "public",
+        "x": 476.46065207002147,
+        "y": 295.72182592009807
+      },
+      {
+        "name": "catatan_bimbingan",
+        "schemaName": "public",
+        "x": 811.6690346866022,
+        "y": -23.015691027026833
+      },
+      {
+        "name": "notifikasi",
+        "schemaName": "public",
+        "x": 473.4356628311347,
+        "y": 17.88264495452063
+      },
+      {
+        "name": "booking_konsul",
+        "schemaName": "public",
+        "x": 935.3433895865567,
+        "y": -374.8879903542001
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": []
+  },
+  "views": {}
+}

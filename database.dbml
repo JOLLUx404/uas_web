@@ -1,0 +1,67 @@
+project sistem_bimbingan_akademik {
+databse_typr:"PostgreSQL"
+}
+
+table pengguna{
+id integer [pk, increment]
+nama varchar
+email varchar
+password varchar
+peran varchar // admin || dosen || mahasiswa
+reset_token varchar
+dibuat_pada timestamp
+diperbarui_pada timestamp
+}
+
+table mahasiswa{
+id integer [pk, increment]
+pengguna_id integer [ref: > pengguna.id]
+nim varchar
+program_studi varchar
+angkatan integer
+}
+
+table dosen{
+id integer [pk, increment]
+pengguna_id integer [ref: > pengguna.id]
+nidn varchar
+departemen varchar
+}
+
+table jadwal_konsul{
+id integer [pk, increment]
+dosen_id integer [ref: > dosen.id]
+tanggal date
+jam_mulai time
+jam_selesai time
+kuota integer
+lokasi varchar
+status varchar
+}
+
+table booking_konsul{
+id integer [pk, increment]
+jadwal_id integer [ref: > jadwal_konsul.id]
+mahasiswa_id integer [ref: > mahasiswa.id]
+topik varchar
+status varchar // menunggu || diterima || ditolak || selesai
+tanggal_booking timestamp
+}
+
+table catatan_bimbingan{
+id integer [pk, increment]
+booking_id integer [ref: > jadwal_konsul.id]
+ringkasan_bimbingan text
+saran text
+tindak_lanjut text
+tanggal_bimbingan timestamp
+}
+
+table notifikasi{
+id integer [pk, increment]
+pengguna_id integer [ref: > pengguna.id]
+judul varchar
+pesan text
+status_baca varchar
+dibuat_pada timestamp
+}
