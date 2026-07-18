@@ -1,0 +1,85 @@
+<h1>Edit Mahasiswa</h1>
+
+{{#if pesanError}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each pesanError}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+{{/if}}
+
+<form action="/mahasiswa/edit/{{mahasiswa.id}}" method="POST">
+    <div class="mb-3">
+        <label for="nim" class="form-label">NIM</label>
+        <input type="text" class="form-control" id="nim" name="nim" 
+            value="{{mahasiswa.nim}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="nama" class="form-label">Nama</label>
+        <input type="text" class="form-control" id="nama" name="nama" 
+            value="{{mahasiswa.nama}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" 
+            value="{{mahasiswa.email}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="fakultas" class="form-label">Fakultas</label>
+        <select class="form-control" id="fakultas" name="fakultas" onchange="filterProdi()" required>
+            <option value="">Pilih Fakultas</option>
+            <option value="Fakultas Sains dan Teknologi (FaST)" {{#if (eq mahasiswa.fakultas "Fakultas Sains dan Teknologi (FaST)")}}selected{{/if}}>Fakultas Sains dan Teknologi (FaST)</option>
+            <option value="Fakultas Ilmu Sosial dan Humaniora (FISH)" {{#if (eq mahasiswa.fakultas "Fakultas Ilmu Sosial dan Humaniora (FISH)")}}selected{{/if}}>Fakultas Ilmu Sosial dan Humaniora (FISH)</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="program_studi" class="form-label">Program Studi</label>
+        <select class="form-control" id="program_studi" name="program_studi" required>
+            <option value="">Pilih Program Studi</option>
+            <!-- Options populated by JS, or conditionally rendered -->
+            {{#if (eq mahasiswa.fakultas "Fakultas Sains dan Teknologi (FaST)")}}
+                <option value="Sistem Informasi (SI)" {{#if (eq mahasiswa.program_studi "Sistem Informasi (SI)")}}selected{{/if}}>Sistem Informasi (SI)</option>
+                <option value="Teknik Informatika (TI)" {{#if (eq mahasiswa.program_studi "Teknik Informatika (TI)")}}selected{{/if}}>Teknik Informatika (TI)</option>
+                <option value="Teknologi Informasi (IT)" {{#if (eq mahasiswa.program_studi "Teknologi Informasi (IT)")}}selected{{/if}}>Teknologi Informasi (IT)</option>
+            {{else if (eq mahasiswa.fakultas "Fakultas Ilmu Sosial dan Humaniora (FISH)")}}
+                <option value="Manajemen" {{#if (eq mahasiswa.program_studi "Manajemen")}}selected{{/if}}>Manajemen</option>
+                <option value="Akuntansi" {{#if (eq mahasiswa.program_studi "Akuntansi")}}selected{{/if}}>Akuntansi</option>
+            {{/if}}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="angkatan" class="form-label">Tahun Masuk (Angkatan)</label>
+        <input type="number" class="form-control" id="angkatan" name="angkatan" 
+            value="{{mahasiswa.angkatan}}" min="2000" max="2100" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+
+<script>
+function filterProdi() {
+    const fakultas = document.getElementById('fakultas').value;
+    const prodiSelect = document.getElementById('program_studi');
+    
+    const fastOptions = [
+        '<option value="Sistem Informasi (SI)">Sistem Informasi (SI)</option>',
+        '<option value="Teknik Informatika (TI)">Teknik Informatika (TI)</option>',
+        '<option value="Teknologi Informasi (IT)">Teknologi Informasi (IT)</option>'
+    ];
+    
+    const fishOptions = [
+        '<option value="Manajemen">Manajemen</option>',
+        '<option value="Akuntansi">Akuntansi</option>'
+    ];
+    
+    let html = '<option value="">Pilih Program Studi</option>';
+    if (fakultas === 'Fakultas Sains dan Teknologi (FaST)') {
+        html += fastOptions.join('');
+    } else if (fakultas === 'Fakultas Ilmu Sosial dan Humaniora (FISH)') {
+        html += fishOptions.join('');
+    }
+    
+    prodiSelect.innerHTML = html;
+}
+</script>

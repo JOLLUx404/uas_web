@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Daftar Dosen</h2>
+    <a href="/dosen/create" class="btn btn-success d-inline-flex align-items-center gap-2" title="Tambah Dosen">
+        <i data-lucide="plus" width="18" height="18"></i> <span class="d-none d-sm-inline">Tambah</span>
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>NIDN</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Departemen</th>
+                    <th class="text-center" style="width: 120px;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#unless dosen.length}}
+                <tr>
+                    <td colspan="5" class="text-center py-5">
+                        <div class="text-muted mb-2">Tidak ada dosen yang ditemukan</div>
+                        <a href="/dosen/create" class="btn btn-outline-success btn-sm mt-2">Tambah Dosen Baru</a>
+                    </td>
+                </tr>
+                {{/unless}}
+
+                {{#each dosen}}
+                <tr>
+                    <td class="fw-medium">{{this.nidn}}</td>
+                    <td>{{this.nama}}</td>
+                    <td class="text-muted">{{this.email}}</td>
+                    <td>
+                        <span class="badge bg-light text-dark border">
+                            {{this.fakultas}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="/dosen/edit/{{this.id}}" class="btn btn-light btn-sm text-primary shadow-sm" title="Edit">
+                                <i data-lucide="pencil" width="16" height="16"></i>
+                            </a>
+                            <form action="/dosen/delete/{{this.id}}" method="POST" onsubmit="return confirm('Yakin ingin menghapus dosen ini?');" class="d-inline m-0">
+                                <button type="submit" class="btn btn-light btn-sm text-danger shadow-sm" title="Hapus">
+                                    <i data-lucide="trash-2" width="16" height="16"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{#if dosen.length}}
+    <div class="card-footer bg-white border-top py-3">
+        <small class="text-muted">Menampilkan total <strong>{{dosen.length}}</strong> dosen.</small>
+    </div>
+    {{/if}}
+</div>

@@ -1,0 +1,39 @@
+<div class="mb-4">
+    <h1>Dashboard Dosen</h1>
+    <p class="text-muted">Selamat datang, {{dosen.nama}} ({{dosen.nidn}})</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body text-center py-4">
+                <h5 class="card-title">Kelas Bimbingan</h5>
+                <h1 class="display-4 font-weight-bold">{{totalKelas}}</h1>
+                <p class="card-text">Total Kelas Aktif</p>
+                <a href="/dosen-panel/data-kelas" class="btn btn-outline-light btn-sm mt-2">Buka Data Kelas</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body text-center py-4">
+                <h5 class="card-title">Mahasiswa Bimbingan</h5>
+                <h1 class="display-4 font-weight-bold">{{totalMahasiswa}}</h1>
+                <p class="card-text">Total Mahasiswa Terdaftar</p>
+                <a href="/dosen-panel/data-kelas" class="btn btn-outline-light btn-sm mt-2">Lihat Mahasiswa</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark mb-4">
+            <div class="card-body text-center py-4">
+                <h5 class="card-title">Pengajuan Bimbingan</h5>
+                <h1 class="display-4 font-weight-bold">{{pendingBimbingan}}</h1>
+                <p class="card-text">Menunggu Persetujuan</p>
+                <a href="/dosen-panel/bimbingan" class="btn btn-outline-dark btn-sm mt-2">Periksa Bimbingan</a>
+            </div>
+        </div>
+    </div>
+</div>

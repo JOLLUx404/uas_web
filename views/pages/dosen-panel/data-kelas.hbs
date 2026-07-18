@@ -1,0 +1,46 @@
+<div class="mb-4">
+    <h1>Data Kelas Bimbingan</h1>
+    <p class="text-muted">Daftar kelas akademik yang berada dibawah bimbingan Anda.</p>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        Kelas Bimbingan Anda
+    </div>
+    <div class="card-body">
+        {{#if kelas.length}}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nama Kelas</th>
+                        <th>Program Studi</th>
+                        <th>Angkatan</th>
+                        <th>Komting</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each kelas}}
+                    <tr>
+                        <td>{{this.nama_kelas}}</td>
+                        <td>{{this.program_studi}}</td>
+                        <td>{{this.angkatan}}</td>
+                        <td>
+                            {{#if this.nama_komting}}
+                                {{this.nama_komting}} ({{this.nim_komting}})
+                            {{else}}
+                                <span class="text-danger">Belum Ditunjuk</span>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <a href="/dosen-panel/data-kelas/{{this.id}}" class="btn btn-info btn-sm">Buka Detail Kelas</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <p class="text-muted text-center my-4">Anda belum ditugaskan sebagai pembimbing di kelas manapun.</p>
+        {{/if}}
+    </div>
+</div>

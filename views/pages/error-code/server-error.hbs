@@ -1,0 +1,25 @@
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="text-center animate-fade-in-up">
+        <i data-lucide="server-crash" class="text-secondary mb-3" style="width: 80px; height: 80px;"></i>
+        <h1 class="display-1 fw-bold text-dark mb-0">500</h1>
+        <h2 class="h4 text-muted mb-4">Kesalahan Internal Server</h2>
+        
+        <div class="alert alert-secondary d-inline-block px-4 py-3 mb-4 shadow-sm border-0 text-start max-w-md">
+            <p class="mb-1"><i data-lucide="alert-triangle" width="18" height="18" class="me-2 text-warning"></i> <strong>Ups! Terjadi kendala.</strong></p>
+            <p class="mb-0 text-muted small">Server kami sedang mengalami masalah. Tim kami akan segera menanganinya.</p>
+            {{#if pesanError}}
+                <hr class="my-2">
+                <code class="text-danger small">{{pesanError}}</code>
+            {{/if}}
+        </div>
+        
+        <div>
+            <button onclick="window.location.reload()" class="btn btn-outline-secondary rounded-pill px-4 me-2">
+                <i data-lucide="refresh-cw" width="16" height="16" class="me-1"></i> Coba Lagi
+            </button>
+            <a href="/" class="btn btn-primary rounded-pill px-4">
+                <i data-lucide="home" width="16" height="16" class="me-1"></i> Beranda
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<h1>Create Mahasiswa</h1>
+
+{{#if pesanError}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each pesanError}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+{{/if}}
+
+<form action="/mahasiswa/create" method="POST">
+    <div class="mb-3">
+        <label for="nim" class="form-label">NIM</label>
+        <input type="text" class="form-control" id="nim" name="nim" required>
+    </div>
+    <div class="mb-3">
+        <label for="nama" class="form-label">Nama</label>
+        <input type="text" class="form-control" id="nama" name="nama" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="fakultas" class="form-label">Fakultas</label>
+        <select class="form-control" id="fakultas" name="fakultas" onchange="filterProdi()" required>
+            <option value="">Pilih Fakultas</option>
+            <option value="Fakultas Sains dan Teknologi (FaST)">Fakultas Sains dan Teknologi (FaST)</option>
+            <option value="Fakultas Ilmu Sosial dan Humaniora (FISH)">Fakultas Ilmu Sosial dan Humaniora (FISH)</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="program_studi" class="form-label">Program Studi</label>
+        <select class="form-control" id="program_studi" name="program_studi" required>
+            <option value="">Pilih Program Studi</option>
+            <!-- Options populated by JS -->
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="angkatan" class="form-label">Tahun Masuk (Angkatan)</label>
+        <input type="number" class="form-control" id="angkatan" name="angkatan" min="2000" max="2100" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+function filterProdi() {
+    const fakultas = document.getElementById('fakultas').value;
+    const prodiSelect = document.getElementById('program_studi');
+    
+    const fastOptions = [
+        '<option value="Sistem Informasi (SI)">Sistem Informasi (SI)</option>',
+        '<option value="Teknik Informatika (TI)">Teknik Informatika (TI)</option>',
+        '<option value="Teknologi Informasi (IT)">Teknologi Informasi (IT)</option>'
+    ];
+    
+    const fishOptions = [
+        '<option value="Manajemen">Manajemen</option>',
+        '<option value="Akuntansi">Akuntansi</option>'
+    ];
+    
+    let html = '<option value="">Pilih Program Studi</option>';
+    if (fakultas === 'Fakultas Sains dan Teknologi (FaST)') {
+        html += fastOptions.join('');
+    } else if (fakultas === 'Fakultas Ilmu Sosial dan Humaniora (FISH)') {
+        html += fishOptions.join('');
+    }
+    
+    prodiSelect.innerHTML = html;
+}
+</script>

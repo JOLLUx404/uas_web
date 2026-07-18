@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.11.1",
+    "bootstrap": "^5.3.8",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-handlebars": "^9.0.1",
+    "express-session": "^1.19.0",
+    "nodemailer": "^9.0.3"
+  },
+  "name": "uas_web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "scripts": {
+    "dev" : "nodemon index.js",
+    "db:init": "rm database.db && node database/init.js",
+    "db:seed": "node database/seeder.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JOLLUx404/uas_web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JOLLUx404/uas_web/issues"
+  },
+  "homepage": "https://github.com/JOLLUx404/uas_web#readme"
+}

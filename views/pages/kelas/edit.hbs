@@ -1,0 +1,208 @@
+<h1>Edit Kelas Bimbingan</h1>
+
+{{#if pesanError}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each pesanError}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+{{/if}}
+
+<form action="/kelas/edit/{{kelas.id}}" method="POST">
+    <div class="mb-3">
+        <label for="nama_kelas" class="form-label">Nama Kelas</label>
+        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" value="{{kelas.nama_kelas}}" required>
+    </div>
+    
+    <div class="mb-3">
+        <label for="fakultas" class="form-label">Fakultas</label>
+        <select class="form-control" id="fakultas" name="fakultas" onchange="onFakultasChange()" required>
+            <option value="">Pilih Fakultas</option>
+            <option value="Fakultas Sains dan Teknologi (FaST)" {{#if (eq kelas.fakultas "Fakultas Sains dan Teknologi (FaST)")}}selected{{/if}}>Fakultas Sains dan Teknologi (FaST)</option>
+            <option value="Fakultas Ilmu Sosial dan Humaniora (FISH)" {{#if (eq kelas.fakultas "Fakultas Ilmu Sosial dan Humaniora (FISH)")}}selected{{/if}}>Fakultas Ilmu Sosial dan Humaniora (FISH)</option>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label for="program_studi" class="form-label">Program Studi</label>
+        <select class="form-control" id="program_studi" name="program_studi" onchange="onProdiChange()" required>
+            <option value="">Pilih Program Studi</option>
+            {{#if (eq kelas.fakultas "Fakultas Sains dan Teknologi (FaST)")}}
+                <option value="Sistem Informasi (SI)" {{#if (eq kelas.program_studi "Sistem Informasi (SI)")}}selected{{/if}}>Sistem Informasi (SI)</option>
+                <option value="Teknik Informatika (TI)" {{#if (eq kelas.program_studi "Teknik Informatika (TI)")}}selected{{/if}}>Teknik Informatika (TI)</option>
+                <option value="Teknologi Informasi (IT)" {{#if (eq kelas.program_studi "Teknologi Informasi (IT)")}}selected{{/if}}>Teknologi Informasi (IT)</option>
+            {{else if (eq kelas.fakultas "Fakultas Ilmu Sosial dan Humaniora (FISH)")}}
+                <option value="Manajemen" {{#if (eq kelas.program_studi "Manajemen")}}selected{{/if}}>Manajemen</option>
+                <option value="Akuntansi" {{#if (eq kelas.program_studi "Akuntansi")}}selected{{/if}}>Akuntansi</option>
+            {{/if}}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="dosen_id" class="form-label">Dosen Pembimbing</label>
+        <select class="form-control" id="dosen_id" name="dosen_id" required>
+            <option value="">Pilih Dosen</option>
+            <!-- Diisi oleh JS saat diload -->
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="angkatan" class="form-label">Tahun Masuk (Angkatan)</label>
+        <select class="form-control" id="angkatan" name="angkatan" onchange="loadMahasiswa()" required>
+            <option value="">Pilih Tahun Masuk (Pilih Prodi dahulu)</option>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label">Pilih Mahasiswa</label>
+        <div id="mahasiswaList" class="border p-3" style="max-height: 200px; overflow-y: scroll;">
+            <p class="text-muted">Loading mahasiswa...</p>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+
+<script>
+// Initial state
+const currentDosenId = "{{kelas.dosen_id}}";
+const currentMahasiswaIds = JSON.parse('{{{mahasiswaIds}}}');
+
+window.addEventListener('DOMContentLoaded', async () => {
+    const fakultas = document.getElementById('fakultas').value.trim();
+    const program_studi = document.getElementById('program_studi').value.trim();
+    if (fakultas) {
+        await loadDosen(fakultas, currentDosenId);
+        await loadAngkatan(fakultas, program_studi, "{{kelas.angkatan}}");
+        await loadMahasiswa(currentMahasiswaIds);
+    }
+});
+
+async function loadDosen(fakultas, selectedDosenId = null) {
+    const dosenSelect = document.getElementById('dosen_id');
+    let htmlDosen = '<option value="">Pilih Dosen</option>';
+    if (fakultas) {
+        try {
+            const res = await fetch(`/kelas/api/dosen?fakultas=${encodeURIComponent(fakultas)}`, {
+                credentials: 'same-origin'
+            });
+            if (!res.ok) throw new Error("Gagal memuat dosen. Sesi mungkin habis.");
+            const dosens = await res.json();
+            dosens.forEach(d => {
+                const isSelected = String(d.dosen_id) === String(selectedDosenId) ? 'selected' : '';
+                htmlDosen += `<option value="${d.dosen_id}" ${isSelected}>${d.nama} (NIDN: ${d.nidn})</option>`;
+            });
+        } catch (e) {
+            console.error('Error fetching dosen:', e);
+            alert("Gagal mengambil data dosen. Silakan refresh halaman.");
+        }
+    }
+    dosenSelect.innerHTML = htmlDosen;
+}
+
+async function loadAngkatan(fakultas, program_studi, selectedYear = null) {
+    const angkatanSelect = document.getElementById('angkatan');
+    let htmlAngkatan = '<option value="">Pilih Tahun Masuk</option>';
+    if (fakultas && program_studi) {
+        try {
+            const res = await fetch(`/kelas/api/angkatan?fakultas=${encodeURIComponent(fakultas)}&program_studi=${encodeURIComponent(program_studi)}`, {
+                credentials: 'same-origin'
+            });
+            if (!res.ok) throw new Error("Gagal mengambil data angkatan.");
+            const angkatans = await res.json();
+            
+            // Tetap masukkan angkatan saat ini jika tidak ada mahasiswa lain lagi disana
+            if (selectedYear && !angkatans.includes(parseInt(selectedYear)) && !angkatans.includes(String(selectedYear))) {
+                angkatans.push(selectedYear);
+            }
+            
+            angkatans.forEach(yr => {
+                const isSelected = String(yr) === String(selectedYear) ? 'selected' : '';
+                htmlAngkatan += `<option value="${yr}" ${isSelected}>${yr}</option>`;
+            });
+        } catch (e) {
+            console.error('Error fetching angkatan:', e);
+        }
+    }
+    angkatanSelect.innerHTML = htmlAngkatan;
+}
+
+async function onFakultasChange() {
+    const fakultas = document.getElementById('fakultas').value.trim();
+    
+    // Update Program Studi
+    const prodiSelect = document.getElementById('program_studi');
+    let htmlProdi = '<option value="">Pilih Program Studi</option>';
+    if (fakultas === 'Fakultas Sains dan Teknologi (FaST)') {
+        htmlProdi += '<option value="Sistem Informasi (SI)">Sistem Informasi (SI)</option>';
+        htmlProdi += '<option value="Teknik Informatika (TI)">Teknik Informatika (TI)</option>';
+        htmlProdi += '<option value="Teknologi Informasi (IT)">Teknologi Informasi (IT)</option>';
+    } else if (fakultas === 'Fakultas Ilmu Sosial dan Humaniora (FISH)') {
+        htmlProdi += '<option value="Manajemen">Manajemen</option>';
+        htmlProdi += '<option value="Akuntansi">Akuntansi</option>';
+    }
+    prodiSelect.innerHTML = htmlProdi;
+    
+    // Clear Angkatan and Mahasiswa when Fakultas changes
+    document.getElementById('angkatan').innerHTML = '<option value="">Pilih Tahun Masuk (Pilih Prodi dahulu)</option>';
+    document.getElementById('mahasiswaList').innerHTML = '<p class="text-muted">Pilih Fakultas, Program Studi, dan Tahun Masuk terlebih dahulu.</p>';
+    
+    // Reload dosen
+    await loadDosen(fakultas);
+}
+
+async function onProdiChange() {
+    const fakultas = document.getElementById('fakultas').value.trim();
+    const program_studi = document.getElementById('program_studi').value.trim();
+    
+    await loadAngkatan(fakultas, program_studi);
+    
+    // Clear mahasiswa list
+    document.getElementById('mahasiswaList').innerHTML = '<p class="text-muted">Pilih Fakultas, Program Studi, dan Tahun Masuk terlebih dahulu.</p>';
+}
+
+async function loadMahasiswa(selectedIds = []) {
+    const fakultas = document.getElementById('fakultas').value.trim();
+    const program_studi = document.getElementById('program_studi').value.trim();
+    const angkatan = document.getElementById('angkatan').value.trim();
+    
+    const mhsContainer = document.getElementById('mahasiswaList');
+    
+    if (fakultas && program_studi && angkatan) {
+        mhsContainer.innerHTML = '<p class="text-muted">Loading...</p>';
+        try {
+            const url = `/kelas/api/mahasiswa?fakultas=${encodeURIComponent(fakultas)}&program_studi=${encodeURIComponent(program_studi)}&angkatan=${encodeURIComponent(angkatan)}`;
+            const res = await fetch(url, {
+                credentials: 'same-origin'
+            });
+            if (!res.ok) throw new Error("Gagal memuat mahasiswa. Sesi mungkin habis.");
+            const mahasiswas = await res.json();
+            
+            if (mahasiswas.length === 0) {
+                mhsContainer.innerHTML = '<p class="text-muted">Tidak ada mahasiswa yang ditemukan dengan kriteria tersebut.</p>';
+            } else {
+                let html = '';
+                mahasiswas.forEach(m => {
+                    const isChecked = selectedIds.includes(m.mahasiswa_id) ? 'checked' : '';
+                    html += `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="mahasiswa_ids" value="${m.mahasiswa_id}" id="mhs_${m.mahasiswa_id}" ${isChecked}>
+                        <label class="form-check-label" for="mhs_${m.mahasiswa_id}">
+                            ${m.nama} (${m.nim})
+                        </label>
+                    </div>
+                    `;
+                });
+                mhsContainer.innerHTML = html;
+            }
+        } catch(e) {
+            console.error('Error fetching mahasiswa:', e);
+            mhsContainer.innerHTML = '<p class="text-danger">Gagal memuat data mahasiswa. Coba refresh halaman.</p>';
+        }
+    } else {
+        mhsContainer.innerHTML = '<p class="text-muted">Pilih Fakultas, Program Studi, dan Tahun Masuk terlebih dahulu.</p>';
+    }
+}
+</script>

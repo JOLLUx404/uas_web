@@ -1,0 +1,105 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0 fw-bold d-flex align-items-center gap-2">
+            <i data-lucide="layout-template" class="text-primary" width="28" height="28"></i> Data Kelas Bimbingan
+        </h2>
+        <p class="text-muted mt-2 mb-0">Informasi kelas dan teman sekelas akademik Anda.</p>
+    </div>
+</div>
+
+{{#if kelas}}
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm animate-fade-in-up h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom">
+                    <div class="bg-primary bg-opacity-10 p-2 rounded text-primary">
+                        <i data-lucide="info" width="20" height="20"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-0">Informasi Kelas</h5>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted fw-medium d-block mb-1">Nama Kelas</small>
+                    <div class="fw-semibold text-dark">{{kelas.nama_kelas}}</div>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted fw-medium d-block mb-1">Dosen Pembimbing</small>
+                    <div class="fw-semibold text-dark">{{kelas.nama_dosen}}</div>
+                    <div class="small text-muted">{{kelas.nidn}}</div>
+                </div>
+                
+                <hr class="text-muted opacity-25">
+                
+                <div>
+                    <small class="text-muted fw-medium d-block mb-2">Komting (Ketua Kelas)</small>
+                    {{#if kelas.nama_komting}}
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="fw-semibold text-dark">{{kelas.nama_komting}}</div>
+                            {{#if isKomting}}<span class="badge bg-success bg-opacity-10 text-success border border-success">It's You!</span>{{/if}}
+                        </div>
+                    {{else}}
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger">Belum Ditunjuk</span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm animate-fade-in-up animate-delay-100 h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom">
+                    <div class="bg-secondary bg-opacity-10 p-2 rounded text-secondary">
+                        <i data-lucide="users" width="20" height="20"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-0">Teman Sekelas Anda</h5>
+                </div>
+                
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    {{#if temanSekelas.length}}
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th>NIM</th>
+                                    <th>Nama Mahasiswa</th>
+                                    <th>Peran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each temanSekelas}}
+                                <tr>
+                                    <td class="fw-medium text-dark">{{this.nim}}</td>
+                                    <td>{{this.nama}}</td>
+                                    <td>
+                                        {{#if (eq this.mahasiswa_id ../kelas.komting_id)}}
+                                            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning">Komting</span>
+                                        {{else}}
+                                            <span class="badge bg-light text-secondary border">Anggota</span>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    {{else}}
+                        <div class="text-center py-5">
+                            <i data-lucide="users" class="text-muted opacity-50 mb-3" width="48" height="48"></i>
+                            <p class="text-muted fw-medium mb-0">Belum ada mahasiswa lain di kelas ini.</p>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{else}}
+<div class="alert alert-warning border-warning border-opacity-50 shadow-sm d-flex align-items-center gap-3 p-4 animate-fade-in-up">
+    <i data-lucide="alert-circle" class="text-warning" width="24" height="24"></i>
+    <div>
+        <h5 class="alert-heading fw-bold mb-1">Belum Terdaftar di Kelas</h5>
+        <p class="mb-0 text-dark">Anda belum terdaftar di kelas bimbingan manapun. Silakan hubungi Admin untuk ditambahkan ke dalam kelas.</p>
+    </div>
+</div>
+{{/if}}

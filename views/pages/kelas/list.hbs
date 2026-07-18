@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-between mb-3">
+    <h1>List Kelas Bimbingan</h1>
+    <a href="/kelas/create" class="btn btn-success mb-3">Tambah Kelas Bimbingan</a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nama Kelas</th>
+            <th>Fakultas</th>
+            <th>Program Studi</th>
+            <th>Angkatan</th>
+            <th>Dosen Pembimbing</th>
+            <th>Komting</th>
+            <th colspan="3">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#unless kelas.length}}
+        <tr>
+            <td colspan="9" class="text-center">
+                Tidak ada kelas yang ditemukan <br>
+                <a href="/kelas/create" class="link">Tambah Kelas Bimbingan</a>
+            </td>
+        </tr>
+        {{/unless}}
+
+        {{#each kelas}}
+        <tr>
+            <td>{{this.nama_kelas}}</td>
+            <td>{{this.fakultas}}</td>
+            <td>{{this.program_studi}}</td>
+            <td>{{this.angkatan}}</td>
+            <td>{{this.nama_dosen}} ({{this.nidn}})</td>
+            <td>
+                {{#if this.nama_komting}}
+                    {{this.nama_komting}} ({{this.nim_komting}})
+                {{else}}
+                    <span class="text-danger">Belum Ditunjuk</span>
+                {{/if}}
+            </td>
+            <td>
+                <a href="/kelas/detail/{{this.id}}" class="btn btn-info w-100">Detail</a>
+            </td>
+            <td>
+                <a href="/kelas/edit/{{this.id}}" class="btn btn-warning w-100">Edit</a>
+            </td>
+            <td>
+                <form action="/kelas/delete/{{this.id}}" method="POST"
+                    onsubmit="return confirm('Apakah anda yakin ingin menghapus kelas ini? Semua bimbingan di kelas ini akan terhapus.');">
+                    <button type="submit" class="btn btn-danger w-100">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="9" class="text-center">Total Kelas: {{kelas.length}}</td>
+        </tr>
+    </tfoot>
+</table>

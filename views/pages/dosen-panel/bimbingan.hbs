@@ -1,0 +1,85 @@
+<div class="mb-4">
+    <h1>Data Bimbingan Akademik</h1>
+    <p class="text-muted">Kelola pengajuan bimbingan kelas, persetujuan jadwal, dan berikan catatan bimbingan bulanan.</p>
+</div>
+
+<div class="card">
+    <div class="card-header bg-success text-white">
+        Daftar Pengajuan Bimbingan Kelas
+    </div>
+    <div class="card-body">
+        {{#if bimbinganList.length}}
+            <div class="accordion" id="accordionBimbingan">
+                {{#each bimbinganList}}
+                <div class="accordion-item mb-2 border rounded">
+                    <h2 class="accordion-header" id="heading{{this.id}}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{this.id}}" aria-expanded="false" aria-controls="collapse{{this.id}}">
+                            <div class="d-flex justify-content-between align-items-center w-100 pe-3">
+                                <div>
+                                    <strong>{{this.nama_kelas}}</strong> | Tanggal: {{this.tanggal}} | Jam: {{this.jam}}
+                                </div>
+                                <span class="badge {{#if (eq this.status 'disetujui')}}bg-success{{else if (eq this.status 'ditolak')}}bg-danger{{else}}bg-warning text-dark{{/if}}">
+                                    {{this.status}}
+                                </span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse{{this.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{this.id}}" data-bs-parent="#accordionBimbingan">
+                        <div class="accordion-body bg-light">
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <h5>Informasi Pengajuan</h5>
+                                    <p><strong>Kelas:</strong> {{this.nama_kelas}}</p>
+                                    <p><strong>Komting Pengaju:</strong> {{this.nama_komting}} ({{this.nim_komting}})</p>
+                                    <p><strong>Tanggal & Waktu:</strong> {{this.tanggal}} pkl. {{this.jam}} WIB</p>
+                                    <p><strong>Catatan Dosen:</strong> {{#if this.catatan}}{{this.catatan}}{{else}}<span class="text-muted">Tidak ada catatan</span>{{/if}}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    {{#if (eq this.status 'selesai')}}
+                                        <div class="alert alert-success">
+                                            Status: <strong>Selesai</strong>. Bimbingan telah selesai dilaksanakan dan dikunci.
+                                        </div>
+                                    {{else if (eq this.status 'ditolak')}}
+                                        <div class="alert alert-danger">
+                                            Status: <strong>Ditolak</strong>. Bimbingan ditolak dan dikunci.
+                                        </div>
+                                    {{else if (eq this.status 'diterima')}}
+                                        <h5>Selesaikan Bimbingan</h5>
+                                        <form action="/dosen-panel/bimbingan/{{this.id}}/update-status" method="POST">
+                                            <input type="hidden" name="status" value="selesai">
+                                            <div class="mb-3">
+                                                <span class="badge bg-primary fs-6">Status: Diterima / Berjalan</span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Catatan Hasil Bimbingan (Wajib)</label>
+                                                <textarea class="form-control" name="catatan" rows="3" placeholder="Masukkan materi bimbingan atau hasil konsultasi..." required>{{this.catatan}}</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-success w-100">Selesaikan Bimbingan</button>
+                                        </form>
+                                    {{else}}
+                                        <h5>Tanggapan Dosen</h5>
+                                        <form action="/dosen-panel/bimbingan/{{this.id}}/update-status" method="POST">
+                                            <div class="mb-3">
+                                                <label class="form-label">Status Persetujuan</label>
+                                                <select class="form-select" name="status" required>
+                                                    <option value="menunggu" {{#if (eq this.status "menunggu")}}selected{{/if}}>Menunggu</option>
+                                                    <option value="diterima">Terima & Jadwalkan</option>
+                                                    <option value="ditolak">Tolak</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">Simpan Keputusan</button>
+                                        </form>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        {{else}}
+            <p class="text-muted text-center my-4">Belum ada pengajuan bimbingan dari Komting kelas bimbingan Anda.</p>
+        {{/if}}
+    </div>
+</div>
+

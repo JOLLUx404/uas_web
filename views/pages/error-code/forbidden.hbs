@@ -1,0 +1,19 @@
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-dark mb-0">403</h1>
+        <h2 class="h4 text-muted mb-4">Akses Ditolak</h2>
+        
+        <div class="alert alert-danger d-inline-block px-4 py-3 mb-4 shadow-sm border-0">
+            {{#if pesanError}}{{pesanError}}{{else}}Anda tidak memiliki izin untuk mengakses halaman ini.{{/if}}
+        </div>
+        
+        <div>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary rounded-pill px-4 me-2"> 
+                Kembali
+            </a>
+            <a href="/" class="btn btn-primary rounded-pill px-4">
+                Beranda
+            </a>
+        </div>
+    </div>
+</div>

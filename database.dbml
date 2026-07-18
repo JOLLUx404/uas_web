@@ -1,5 +1,5 @@
 project sistem_bimbingan_akademik {
-databse_typr:"PostgreSQL"
+    database_type:"PostgreSQL"
 }
 
 table pengguna{
@@ -17,44 +17,36 @@ table mahasiswa{
 id integer [pk, increment]
 pengguna_id integer [ref: > pengguna.id]
 nim varchar
+fakultas varchar
 program_studi varchar
 angkatan integer
+kelas_bimbingan_id integer [ref: > kelas_bimbingan.id]
 }
 
 table dosen{
 id integer [pk, increment]
 pengguna_id integer [ref: > pengguna.id]
 nidn varchar
-departemen varchar
+fakultas varchar
 }
 
-table jadwal_konsul{
+table kelas_bimbingan{
 id integer [pk, increment]
+nama_kelas varchar
+fakultas varchar
+program_studi varchar
+angkatan integer
 dosen_id integer [ref: > dosen.id]
+komting_id integer [ref: > mahasiswa.id]
+}
+
+table bimbingan_kelas{
+id integer [pk, increment]
+kelas_bimbingan_id integer [ref: > kelas_bimbingan.id]
 tanggal date
-jam_mulai time
-jam_selesai time
-kuota integer
-lokasi varchar
-status varchar
-}
-
-table booking_konsul{
-id integer [pk, increment]
-jadwal_id integer [ref: > jadwal_konsul.id]
-mahasiswa_id integer [ref: > mahasiswa.id]
-topik varchar
+jam time
 status varchar // menunggu || diterima || ditolak || selesai
-tanggal_booking timestamp
-}
-
-table catatan_bimbingan{
-id integer [pk, increment]
-booking_id integer [ref: > jadwal_konsul.id]
-ringkasan_bimbingan text
-saran text
-tindak_lanjut text
-tanggal_bimbingan timestamp
+catatan text
 }
 
 table notifikasi{
@@ -62,6 +54,6 @@ id integer [pk, increment]
 pengguna_id integer [ref: > pengguna.id]
 judul varchar
 pesan text
-status_baca varchar
+status_baca varchar //sudahbaca || belum dibaca
 dibuat_pada timestamp
 }
