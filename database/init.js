@@ -16,20 +16,6 @@ db.exec(`
 `);
 
 db.exec(`
-    CREATE TABLE IF NOT EXISTS kelas_bimbingan (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nama_kelas TEXT NOT NULL,
-        fakultas TEXT NOT NULL,
-        program_studi TEXT NOT NULL,
-        angkatan INTEGER NOT NULL,
-        dosen_id INTEGER NOT NULL,
-        komting_id INTEGER,
-        FOREIGN KEY (dosen_id) REFERENCES dosen(id) ON DELETE CASCADE,
-        FOREIGN KEY (komting_id) REFERENCES mahasiswa(id) ON DELETE SET NULL
-    );
-`);
-
-db.exec(`
     CREATE TABLE IF NOT EXISTS mahasiswa(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         pengguna_id INTEGER NOT NULL,
@@ -50,6 +36,20 @@ db.exec(`
         nidn TEXT UNIQUE NOT NULL,
         fakultas TEXT NOT NULL,
         FOREIGN KEY (pengguna_id) REFERENCES pengguna(id) ON DELETE CASCADE
+    );
+`);
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS kelas_bimbingan (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nama_kelas TEXT NOT NULL,
+        fakultas TEXT NOT NULL,
+        program_studi TEXT NOT NULL,
+        angkatan INTEGER NOT NULL,
+        dosen_id INTEGER NOT NULL,
+        komting_id INTEGER,
+        FOREIGN KEY (dosen_id) REFERENCES dosen(id) ON DELETE CASCADE,
+        FOREIGN KEY (komting_id) REFERENCES mahasiswa(id) ON DELETE SET NULL
     );
 `);
 

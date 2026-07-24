@@ -15,7 +15,7 @@ function validateDosen(nidn,nama,email,fakultas){
         pesanError.push("nama dosen tidak boleh kosong");
     } else if (nama.trim().length < 3){
         pesanError.push("nama dosen harus terdiri dari minimal 3 karakter");
-    } else if (!/^[a-zA-Z\s]+$/.test(nama.trim())) {
+    } else if (!/^[a-zA-Z\s,.]+$/.test(nama.trim())) {
         pesanError.push("nama dosen hanya boleh mengandung huruf dan spasi");
     }
 

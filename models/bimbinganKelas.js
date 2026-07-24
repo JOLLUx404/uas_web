@@ -2,59 +2,38 @@ const db = require('../database/config');
 
 function ambilSemuaBimbinganKelas() {
     return db.prepare(`
-        SELECT 
-            bimbinganKelas.*,
-            kelasBimbingan.nama_kelas,
-            penggunaDosen.nama AS nama_dosen,
-            mahasiswaKomting.nim AS nim_komting,
-            penggunaKomting.nama AS nama_komting
-        FROM bimbingan_kelas AS bimbinganKelas
-        JOIN kelas_bimbingan AS kelasBimbingan
-            ON bimbinganKelas.kelas_bimbingan_id = kelasBimbingan.id
-        JOIN dosen AS dosen
-            ON kelasBimbingan.dosen_id = dosen.id
-        JOIN pengguna AS penggunaDosen
-            ON dosen.pengguna_id = penggunaDosen.id
-        LEFT JOIN mahasiswa AS mahasiswaKomting
-            ON kelasBimbingan.komting_id = mahasiswaKomting.id
-        LEFT JOIN pengguna AS penggunaKomting
-            ON mahasiswaKomting.pengguna_id = penggunaKomting.id
-        WHERE dosen.id = ?
-        ORDER BY bimbinganKelas.tanggal DESC, bimbinganKelas.jam DESC
+        SELECT bk.*, kb.nama_kelas, d.nidn, pd.nama as nama_dosen,
+               m.nim as nim_komting, pm.nama as nama_komting
+        FROM bimbingan_kelas bk
+        JOIN kelas_bimbingan kb ON bk.kelas_bimbingan_id = kb.id
+        JOIN dosen d ON kb.dosen_id = d.id
+        JOIN pengguna pd ON d.pengguna_id = pd.id
+        LEFT JOIN mahasiswa m ON kb.komting_id = m.id
+        LEFT JOIN pengguna pm ON m.pengguna_id = pm.id
+        ORDER BY bk.tanggal DESC, bk.jam DESC
     `).all();
 }
 
 function ambilBimbinganByKelasId(kelas_bimbingan_id) {
     return db.prepare(`
-        SELECT 
-            bimbinganKelas.*
-        FROM bimbingan_kelas AS bimbinganKelas
-        WHERE bimbinganKelas.kelas_bimbingan_id = ?
-        ORDER BY bimbinganKelas.tanggal DESC, bimbinganKelas.jam DESC
+        SELECT bk.*
+        FROM bimbingan_kelas bk
+        WHERE bk.kelas_bimbingan_id = ?
+        ORDER BY bk.tanggal DESC, bk.jam DESC
     `).all(kelas_bimbingan_id);
 }
 
 function ambilBimbinganById(id) {
     return db.prepare(`
-        SELECT 
-            bimbinganKelas.*,
-            kelasBimbingan.nama_kelas, 
-            dosen.nidn, 
-            penggunaDosen.nama AS nama_dosen,
-            mahasiswaKomting.nim AS nim_komting, 
-            penggunaKomting.nama AS nama_komting
-        FROM bimbingan_kelas AS bimbinganKelas
-        JOIN kelas_bimbingan AS kelasBimbingan 
-            ON bimbinganKelas.kelas_bimbingan_id = kelasBimbingan.id
-        JOIN dosen AS dosen
-            ON kelasBimbingan.dosen_id = dosen.id
-        JOIN pengguna AS penggunaDosen 
-            ON dosen.pengguna_id = penggunaDosen.id
-        LEFT JOIN mahasiswa AS mahasiswaKomting 
-            ON kelasBimbingan.komting_id = mahasiswaKomting.id
-        LEFT JOIN pengguna AS penggunaKomting 
-            ON mahasiswaKomting.pengguna_id = penggunaKomting.id
-        WHERE bimbinganKelas.id = ?
+        SELECT bk.*, kb.nama_kelas, d.nidn, pd.nama as nama_dosen,
+               m.nim as nim_komting, pm.nama as nama_komting
+        FROM bimbingan_kelas bk
+        JOIN kelas_bimbingan kb ON bk.kelas_bimbingan_id = kb.id
+        JOIN dosen d ON kb.dosen_id = d.id
+        JOIN pengguna pd ON d.pengguna_id = pd.id
+        LEFT JOIN mahasiswa m ON kb.komting_id = m.id
+        LEFT JOIN pengguna pm ON m.pengguna_id = pm.id
+        WHERE bk.id = ?
     `).get(id);
 }
 
@@ -83,24 +62,16 @@ function hapusBimbingan(id) {
 
 function ambilBimbinganByDosenId(dosen_id) {
     return db.prepare(`
-        SELECT bimbinganKelas.*, 
-            kelasBimbingan.nama_kelas, 
-            penggunaDosen.nama AS nama_dosen,
-            mahasiswaKomting.nim AS nim_komting, 
-            penggunaKomting.nama AS nama_komting
-        FROM bimbingan_kelas AS bimbinganKelas
-        JOIN kelas_bimbingan kb 
-            ON bimbinganKelas.kelas_bimbingan_id = kelasBimbingan.id
-        JOIN dosen AS dosen 
-            ON kelasBimbingan.dosen_id = dosen.id
-        JOIN pengguna AS penggunaDosen 
-            ON dosen.pengguna_id = penggunaDosen.id
-        LEFT JOIN mahasiswa AS mahasiswaKomting 
-            ON kelasBmbingan.komting_id = mahasiswaKomting.id
-        LEFT JOIN pengguna penggunaKomting 
-            ON mahasiswaKomting.pengguna_id = penggunaKomting.id
-        WHERE dosen.id = ?
-        ORDER BY bimbinganKelas.tanggal DESC, bimbinganKelas.jam DESC
+        SELECT bk.*, kb.nama_kelas, pd.nama as nama_dosen,
+               m.nim as nim_komting, pm.nama as nama_komting
+        FROM bimbingan_kelas bk
+        JOIN kelas_bimbingan kb ON bk.kelas_bimbingan_id = kb.id
+        JOIN dosen d ON kb.dosen_id = d.id
+        JOIN pengguna pd ON d.pengguna_id = pd.id
+        LEFT JOIN mahasiswa m ON kb.komting_id = m.id
+        LEFT JOIN pengguna pm ON m.pengguna_id = pm.id
+        WHERE d.id = ?
+        ORDER BY bk.tanggal DESC, bk.jam DESC
     `).all(dosen_id);
 }
 

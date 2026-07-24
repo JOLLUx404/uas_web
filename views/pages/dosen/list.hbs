@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0">Daftar Dosen</h2>
     <a href="/dosen/create" class="btn btn-success d-inline-flex align-items-center gap-2" title="Tambah Dosen">
-        <i data-lucide="plus" width="18" height="18"></i> <span class="d-none d-sm-inline">Tambah</span>
+    <span class="d-none d-sm-inline">Tambah</span>
     </a>
 </div>
 
@@ -40,11 +40,10 @@
                     <td>
                         <div class="d-flex gap-2 justify-content-center">
                             <a href="/dosen/edit/{{this.id}}" class="btn btn-light btn-sm text-primary shadow-sm" title="Edit">
-                                <i data-lucide="pencil" width="16" height="16"></i>
                             </a>
                             <form action="/dosen/delete/{{this.id}}" method="POST" onsubmit="return confirm('Yakin ingin menghapus dosen ini?');" class="d-inline m-0">
                                 <button type="submit" class="btn btn-light btn-sm text-danger shadow-sm" title="Hapus">
-                                    <i data-lucide="trash-2" width="16" height="16"></i>
+                                
                                 </button>
                             </form>
                         </div>

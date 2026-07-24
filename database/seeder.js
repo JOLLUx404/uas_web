@@ -77,16 +77,16 @@ async function seedDatabase() {
         const namaDepan = ['Adi', 'Bella', 'Citra', 'Dedi', 'Eka', 'Fajar', 'Gina', 'Haris', 'Indah', 'Joko', 'Kiki', 'Lintang', 'Meisya', 'Novita', 'Okta', 'Budi', 'Rudi', 'Siti', 'Dewi', 'Ahmad'];
         const namaBelakang = ['Pratama', 'Sanjaya', 'Dewi', 'Mulyadi', 'Putri', 'Rahman', 'Hermawan', 'Suryanto', 'Kusuma', 'Widodo', 'Amalia', 'Bima', 'Sakura', 'Sari', 'Prasetya', 'Santoso', 'Hartono', 'Nurhaliza', 'Lestari', 'Wijaya'];
 
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 20; i++) {
             const nim = (23010001 + i).toString();
             const depan = namaDepan[i % namaDepan.length];
             const belakang = namaBelakang[i % namaBelakang.length];
-            const nama = `${depan} ${belakang} ${i + 1}`;
+            const nama = `${depan} ${belakang}`;
             nimList.push(nim);
             namaList.push(nama);
         }
 
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 20; i++) {
             const email = `mahasiswa${i}@ibbi.com`;
             const result = db.prepare(`
                 INSERT INTO pengguna (nama, email, password, peran)

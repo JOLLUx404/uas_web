@@ -63,6 +63,13 @@ function ambilKelasBimbinganByDosenId(dosen_id){
 }
 
 function buatKelasBimbingan(nama_kelas, fakultas, program_studi, angkatan, dosen_id){
+    console.log({
+    nama_kelas,
+    fakultas,
+    program_studi,
+    angkatan,
+    dosen_id
+});
     const stmt = db.prepare(`
         INSERT INTO kelas_bimbingan(nama_kelas, fakultas, program_studi, angkatan, dosen_id)
         VALUES (?,?,?,?,?)

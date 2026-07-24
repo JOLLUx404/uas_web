@@ -1,4 +1,4 @@
-<div class="card border-0 shadow-sm mt-4 animate-fade-in-up">
+<div class="card border-0 shadow-sm mt-4">
     <div class="card-body p-4 p-md-5">
         <h4 class="mb-4 fw-bold">Tambah Dosen</h4>
         {{#if pesanError}}
@@ -15,28 +15,28 @@
             <div class="mb-3">
                 <label for="nidn" class="form-label text-muted fw-semibold">NIDN</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light text-muted border-end-0"><i data-lucide="hash" width="18" height="18"></i></span>
+                    <span class="input-group-text bg-light text-muted border-end-0"></span>
                     <input type="text" class="form-control border-start-0 ps-0" id="nidn" name="nidn" value="{{FormData.nidn}}" required>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="nama" class="form-label text-muted fw-semibold">Nama Lengkap</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light text-muted border-end-0"><i data-lucide="user" width="18" height="18"></i></span>
+                    <span class="input-group-text bg-light text-muted border-end-0"></span>
                     <input type="text" class="form-control border-start-0 ps-0" id="nama" name="nama" value="{{FormData.nama}}" required>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label text-muted fw-semibold">Email Address</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light text-muted border-end-0"><i data-lucide="mail" width="18" height="18"></i></span>
+                    <span class="input-group-text bg-light text-muted border-end-0"></span>
                     <input type="email" class="form-control border-start-0 ps-0" id="email" name="email" value="{{FormData.email}}" required>
                 </div>
             </div>
             <div class="mb-4">
                 <label for="fakultas" class="form-label text-muted fw-semibold">Fakultas</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light text-muted border-end-0"><i data-lucide="building" width="18" height="18"></i></span>
+                    <span class="input-group-text bg-light text-muted border-end-0"></span>
                     <select class="form-select border-start-0 ps-0" id="fakultas" name="fakultas" required>
                         <option value="">Pilih Fakultas</option>
                         <option value="Fakultas Sains dan Teknologi (FaST)" {{#if (eq FormData.fakultas 'Fakultas Sains dan Teknologi (FaST)')}}selected{{/if}}>Fakultas Sains dan Teknologi (FaST)</option>
@@ -46,10 +46,10 @@
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2 px-4 rounded-pill">
-                    <i data-lucide="save" width="18" height="18"></i> Simpan
+                Simpan
                 </button>
                 <a href="/dosen/list" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 px-4 rounded-pill">
-                    <i data-lucide="x" width="18" height="18"></i> Batal
+                Batal
                 </a>
             </div>
         </form>
